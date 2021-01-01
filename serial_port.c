@@ -1,6 +1,6 @@
 #include "serial_port.h"
 #include "fifo.h"
-#define SERIAL_PORT_FIFO_DEPTH (10 * 1024)
+#define SERIAL_PORT_FIFO_DEPTH (5 * 1024)
 
 static HANDLE hCom = NULL; //全局变量，串口句柄
 //static OVERLAPPED *p_overlapped = NULL;
@@ -111,7 +111,6 @@ int serial_port_open(LPCWSTR COMx, int BaudRate)
                       0,//FILE_FLAG_OVERLAPPED,//  (同步方式设置为0) FILE_ATTRIBUTE_NORMAL |
                       NULL);
     if (hCom == INVALID_HANDLE_VALUE) {
-        printf("打开COM失败!\n");
         return FALSE;
     }
     BOOL ret = SetupComm(hCom, 1024, 1024); //输入缓冲区和输出缓冲区的大小都是1024

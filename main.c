@@ -26,22 +26,27 @@
 #define SERIAL_PORT_MUTEX_NAME "serial_port"
 #define SERIAL_PORT_NUMBER_PREINDEX "\\\\.\\"
 
-const char *COM_PORT[COM_PORT_NUM_MAX] = {
-    "COM1",
-    "COM2",
-    "COM3",
-    "COM4",
-    "COM5",
-    "COM6",
-    "COM7",
-    "COM8",
-    "COM9",
-    "COM10",
-	"COM11",
-	"COM12",
-	"COM13",
-	"COM14",
-	"COM15"
+typedef struct {
+	const char *port;
+	bool is_available;
+} com_port_t;
+
+com_port_t COM_PORT[COM_PORT_NUM_MAX] = {
+	{"COM1", false},
+    {"COM2", false},
+    {"COM3", false},
+    {"COM4", false},
+    {"COM5", false},
+    {"COM6", false},
+    {"COM7", false},
+    {"COM8", false},
+    {"COM9", false},
+    {"COM10", false},
+	{"COM11", false},
+	{"COM12", false},
+	{"COM13", false},
+	{"COM14", false},
+	{"COM15", false}
 };
 
 static DWORD serial_port_threadID = 0;
@@ -62,6 +67,41 @@ BOOL mutex_unlock()
     return ReleaseMutex(serial_port_mutex);
 }
 
+BOOL available_serial_port_check()
+{
+	uint8_t available_com_port_num = 0;
+	BOOL ret;
+	while (available_com_port_num == 0) {
+		for (unsigned int i = 0; i < COM_PORT_NUM_MAX; i++) {
+			if (i >= 9) { //can not open port that number is equal or greater than "COM10", add "\\\\.\\" in the front
+				char buf[100] = { 0 };
+				strncpy(buf, SERIAL_PORT_NUMBER_PREINDEX, strlen(SERIAL_PORT_NUMBER_PREINDEX));
+				strncat(buf, COM_PORT[i].port, strlen(COM_PORT[i].port));
+				ret = serial_port_open(buf, 115200);
+			}
+			else {
+				ret = serial_port_open(COM_PORT[i].port, 115200);
+			}
+			if (ret == TRUE) {
+				COM_PORT[i].is_available = true;
+				serial_port_close();
+				available_com_port_num++;
+			}
+		}
+		if (available_com_port_num == 0) {
+			printf("no available serial port!\r\n");
+			Sleep(1000);
+		}
+		else {
+			printf("available serial port: ");
+			for (unsigned int i = 0; i < COM_PORT_NUM_MAX; i++) {
+				if (COM_PORT[i].is_available) {
+					printf("%s ", COM_PORT[i].port);
+				}
+			}
+		}
+	}
+}
 /*******************************************************************************
  **
  ** Forward Declarations
@@ -198,9 +238,16 @@ int	main(
 
             boolQuit = true;
         }
+		/* list available serial port*/
+		BOOL check_ret = FALSE;
+		do {
+			check_ret = available_serial_port_check();
+		} while (!check_ret);
+		printf("\r\n");
+		/****************************/
 
         while (!boolQuit) {
-            printf("Enter a command (\"send\" or \"quit\" or \"com port\"): \r\n");
+            printf("Enter a command (\"send\" or \"quit\" or \"serial port\"): \r\n");
 
             /* Read in single line from "stdin": */
             for (i = 0; (i < 80) && ((ch = getchar()) != EOF) && (ch != '\n'); i++)
@@ -233,21 +280,21 @@ int	main(
                 boolQuit = true;
             } else {
                 for (unsigned int i = 0; i < COM_PORT_NUM_MAX; i++) {
-                    if (0 == _tcsicmp(buffer, COM_PORT[i])) {
+                    if (0 == _tcsicmp(buffer, COM_PORT[i].port)) {
 						printf("Opening serial port...\n");
-						if (i >= 9) { //can not open port that number is equal or greater than "COM10", add "\\\\.\\" in the front
+						if (i >= 9) {
 							char buf[100] = { 0 };
 							strncpy(buf, SERIAL_PORT_NUMBER_PREINDEX, strlen(SERIAL_PORT_NUMBER_PREINDEX));
-							strncat(buf, COM_PORT[i], strlen(COM_PORT[i]));
+							strncat(buf, COM_PORT[i].port, strlen(COM_PORT[i].port));
 							ret = serial_port_open(buf, 115200);
 						} else {
-							ret = serial_port_open(COM_PORT[i], 115200);
+							ret = serial_port_open(COM_PORT[i].port, 115200);
 						}
                         if (!ret) {
                             printf("open serial port fail\r\n");
                             return -1;
                         }
-
+						printf("open serial port success\r\n");
 						serial_port_mutex = CreateMutex(NULL, TRUE, SERIAL_PORT_MUTEX_NAME);
 						assert(serial_port_mutex);
 
@@ -270,8 +317,8 @@ int	main(
             serial_port_data_handler(pop_data);
         } else {
             //printf("fifo pop fail \r\n");
+			Sleep(5);
         }
-        //Sleep(5);
     }
     if (NULL != g_pReleaseLiveImport) {
         g_pReleaseLiveImport();
