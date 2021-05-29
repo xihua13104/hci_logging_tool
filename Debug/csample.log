@@ -1,6 +1,4 @@
-﻿  fifo.c
-c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\fifo.c(26): warning C4013: “memset”未定义；假设外部返回 int
-  main.c
+﻿  main.c
 c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\main.c(62): warning C4047: “函数”:“DWORD”与“void *”的间接级别不同
 c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\main.c(62): warning C4024: “OpenMutexA”: 形参和实参 1 的类型不同
 c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\main.c(62): warning C4047: “函数”:“BOOL”与“HANDLE”的间接级别不同
@@ -17,16 +15,7 @@ c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_to
 c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\main.c(301): warning C4047: “=”:“DWORD”与“HANDLE”的间接级别不同
 c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\main.c(449): warning C4459: “hci_log”的声明隐藏了全局声明
   c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\main.c(377): note: 参见“hci_log”的声明
-  serial_port.c
-c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\serial_port.c(24): warning C4057: “函数”:“LPDWORD”与“unsigned int *”在稍微不同的基类型间接寻址上不同
-c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\serial_port.c(9): warning C4100: “lpParam”: 未引用的形参
-c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\serial_port.c(14): warning C4189: “dwEventMask”: 局部变量已初始化但不引用
-c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\serial_port.c(25): warning C4189: “error”: 局部变量已初始化但不引用
-c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\serial_port.c(106): warning C4133: “函数”: 从“LPCWSTR”到“LPCSTR”的类型不兼容
-c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\serial_port.c(174): warning C4057: “函数”:“LPDWORD”与“unsigned int *”在稍微不同的基类型间接寻址上不同
-  正在生成代码...
 c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\main.c(104): warning C4716: “available_serial_port_check”: 必须返回一个值
 c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\main.c(469): warning C4701: 使用了可能未初始化的局部变量“hci_data_type”
 c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\main.c(469): warning C4701: 使用了可能未初始化的局部变量“hci_log_direction”
-fifo.obj : warning LNK4075: 忽略“/EDITANDCONTINUE”(由于“/SAFESEH”规范)
   csample.vcxproj -> C:\Users\heye\Desktop\wireless_bt\ref\logging_tool\HCILoggingTool\HCI_Logging_Tool\Debug\CSample.exe

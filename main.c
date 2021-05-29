@@ -286,9 +286,9 @@ int	main(
 							char buf[100] = { 0 };
 							strncpy(buf, SERIAL_PORT_NUMBER_PREINDEX, strlen(SERIAL_PORT_NUMBER_PREINDEX));
 							strncat(buf, COM_PORT[i].port, strlen(COM_PORT[i].port));
-							ret = serial_port_open(buf, 115200);
+							ret = serial_port_open(buf, 921600);
 						} else {
-							ret = serial_port_open(COM_PORT[i].port, 115200);
+							ret = serial_port_open(COM_PORT[i].port, 921600);
 						}
                         if (!ret) {
                             printf("open serial port fail\r\n");
